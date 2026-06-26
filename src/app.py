@@ -1,13 +1,10 @@
 """src/app.py — Retail Data Engineering & Analytics Platform"""
-# ── Streamlit Cloud path fix ──────────────────────────────────────────────────
-# When Streamlit Cloud runs src/app.py it adds src/ to sys.path, not the repo
-# root. This one-liner ensures the project root is always first so that
-# `from src.X import ...` resolves correctly in all environments.
+# Streamlit Cloud path fix — must be before ALL other imports.
+# Cloud sets sys.path to src/ not the repo root, so from src.X fails without this.
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-# ─────────────────────────────────────────────────────────────────────────────
-from __future__ import annotations
+
 import time, logging
 from typing import Any
 import numpy as np
