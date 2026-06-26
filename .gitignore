@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Database (generated at runtime — download from app instead)
+database/*.db
+retail.db
+retailmart.db
+
+# Logs (generated at runtime)
+logs/
+*.log
+
+# Quarantine files (generated at runtime)
+quarantine/
+
+# Reports (generated at runtime)
+reports/
+
+# Environment / secrets
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.user
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/secrets.toml
