@@ -343,9 +343,6 @@ DIVIDE(
 
 ---
 
-# 🌐 Live Demo
-
-# **👉 https://mandelbulb-4omxqtuh369sbcxvj37rtn.streamlit.app/**
 
 ---
 
