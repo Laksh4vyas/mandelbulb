@@ -1,213 +1,358 @@
+# 🚀 Retail Data Engineering & Analytics Platform
 
-# Retail Data Engineering & Analytics Platform
+<p align="center">
 
+![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge\&logo=python)
+![Pandas](https://img.shields.io/badge/Pandas-Data%20Engineering-black?style=for-the-badge\&logo=pandas)
+![SQLite](https://img.shields.io/badge/SQLite-Warehouse-blue?style=for-the-badge\&logo=sqlite)
+![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-red?style=for-the-badge\&logo=streamlit)
+![Plotly](https://img.shields.io/badge/Plotly-Interactive%20Charts-purple?style=for-the-badge\&logo=plotly)
+![Docker](https://img.shields.io/badge/Docker-Containerized-blue?style=for-the-badge\&logo=docker)
 
-An enterprise-grade ETL pipeline with a dual-mode Streamlit analytics portal, star-schema SQLite warehouse, and built-in data quality enforcement.
-
-LIVE  URL - https://mandelbulb-4omxqtuh369sbcxvj37rtn.streamlit.app/
-
-
----
-
-
-## Architecture
-
-
-
-```
-
-raw CSV  →  extract  →  validate  →  clean  →  transform  →  load (SQLite)
-
-                             ↓ scorecard telemetry
-
-                        Streamlit 5-Tab Dashboard
-
-```
-
-
-
-**Star Schema**
-
-- `fact_sales` — transactional measurements + FK references  
-
-- `dim_products` — product catalog dimension  
-
-- `dim_stores` — store/geography dimension  
-
-
+</p>
 
 ---
 
+# 🌐 LIVE APPLICATION
 
+# **👉 https://mandelbulb-4omxqtuh369sbcxvj37rtn.streamlit.app/**
 
-## Quick Start
-
-
-
-```bash
-
-# 1. Install dependencies
-
-pip install -r requirements.txt
-
-
-
-# 2. Run via CLI (demo mode)
-
-python main.py
-
-
-
-# 3. Launch Streamlit UI
-
-streamlit run src/app.py
-
-```
-
-
-
-**Docker**
-
-```bash
-
-docker build -t retail-pipeline .
-
-docker run -p 8501:8501 retail-pipeline
-
-# Open http://localhost:8501
-
-```
-
-
+### Upload your own CSV files or use built-in mock data and generate a complete retail analytics dashboard instantly.
 
 ---
 
+# 📌 Overview
 
+An enterprise-grade **Data Engineering & Analytics Platform** that automatically:
 
-## Five Zero-Day Pitfall Mitigations
+✅ Ingests raw retail datasets
 
+✅ Performs data quality checks
 
+✅ Cleans and transforms the data
 
+✅ Builds a star-schema warehouse
 
-| # | Pitfall | Resolution |
+✅ Generates business insights
 
-|---|---------|------------|
+✅ Produces interactive dashboards
 
-
-
-| 1 | Revenue mismatch (`amount ≠ qty × price`) | Flag `revenue_validation_mismatch=True`; export to `quarantine/revenue_mismatch.csv` |
-
-
-
-| 2 | Orphan dimension keys | Anti-join against `dim_products` / `dim_stores`; isolate to `quarantine/orphan_keys.csv` |
-
-| 3 | Unparseable / bad dates | `pd.to_datetime(errors="coerce")` → quarantine to `quarantine/invalid_dates.csv` |
-
-| 4 | Conflicting metrics on duplicate `sale_id` | Detect multi-value groups before dedup; log conflict count in scorecard |
-
-| 5 | Negative / null quantity | Null imputed to 0; negatives quarantined and excluded from fact table |
-
-
-
-
-
-
+✅ Exports reports and databases
 
 ---
 
+# ✨ Features
 
-## Power BI Integration
+## 📥 Dual Mode Data Ingestion
 
-
-
-1. Download `retail.db` from the **Export Engine** tab.  
-
-2. In Power BI Desktop → **Get Data** → **ODBC** → point to the `.db` file via the SQLite ODBC driver.  
-
-3. Import tables: `fact_sales`, `dim_products`, `dim_stores`.  
-
-4. In **Model View**, draw relationships:  
-
-   - `fact_sales[product_id]` → `dim_products[product_id]` (Many-to-One)  
-
-   - `fact_sales[store_id]` → `dim_stores[store_id]` (Many-to-One)  
-
-6.
-
-7. Example DAX measure:
-
-```dax
-
-Tot
-
-al Revenue = SUM(fact_sales[amount])
-
-
-
-AOV = DIVIDE([Total Revenue], DISTINCTCOUNT(fact_sales[sale_id]))
-
-Revenue MoM % = 
-
-  DIVIDE(
-
-    [Total Revenue] - CALCULATE([Total Revenue], PREVIOUSMONTH(fact_sales[sale_date])),
-
-    CALCULATE([Total Revenue], PREVIOUSMONTH(fact_sales[sale_date]))
-
-  )
-
-```
-
-
+* Upload your own CSV files
+* Use built-in mock datasets
+* Automatic schema validation
 
 ---
 
+## 🧹 Data Quality Engine
 
+* Missing value handling
+* Duplicate detection
+* Negative quantity detection
+* Revenue mismatch detection
+* Invalid date handling
+* Orphan key detection
 
-## Directory Layout
+---
 
+## 🏗 ETL Pipeline
 
-
+```text
+Raw CSV Files
+      │
+      ▼
+   Extract
+      │
+      ▼
+   Validate
+      │
+      ▼
+     Clean
+      │
+      ▼
+   Transform
+      │
+      ▼
+ Build Warehouse
+      │
+      ▼
+  SQLite Database
+      │
+      ▼
+ Business Dashboard
 ```
 
+---
+
+# 🏛 Architecture
+
+```text
+sales_data.csv
+products.csv
+stores.csv
+       │
+       ▼
+ ┌────────────┐
+ │   Extract  │
+ └────────────┘
+       │
+       ▼
+ ┌────────────┐
+ │  Validate  │
+ └────────────┘
+       │
+       ▼
+ ┌────────────┐
+ │    Clean   │
+ └────────────┘
+       │
+       ▼
+ ┌────────────┐
+ │ Transform  │
+ └────────────┘
+       │
+       ▼
+ ┌────────────┐
+ │   SQLite   │
+ └────────────┘
+       │
+       ▼
+ ┌────────────┐
+ │ Dashboard  │
+ └────────────┘
+```
+
+---
+
+# ⭐ Star Schema Warehouse
+
+```text
+dim_products
+      ▲
+      │
+      │
+fact_sales
+      │
+      ▼
+dim_stores
+```
+
+### fact_sales
+
+* sale_id
+* store_id
+* product_id
+* quantity
+* amount
+* sale_date
+
+### dim_products
+
+* product_id
+* product_name
+* category
+* price
+
+### dim_stores
+
+* store_id
+* store_name
+* city
+* region
+
+---
+
+# 📊 Dashboard Features
+
+### 📈 Revenue Trend Analysis
+
+### 🏙 Revenue by City
+
+### 🌎 Revenue by Region
+
+### 🔥 Best Selling Products
+
+### 📦 Product Performance Analysis
+
+### 📋 Raw Data Explorer
+
+### ⬇ Download Reports
+
+### 🌙 Dark Mode
+
+### 🔎 Dynamic Filters
+
+* City
+* Region
+* Product
+* Date Range
+* Revenue Range
+
+---
+
+# 🧪 Data Quality Pitfall Mitigations
+
+| # | Pitfall               | Resolution             |
+| - | --------------------- | ---------------------- |
+| 1 | Revenue mismatch      | Quarantine records     |
+| 2 | Orphan dimension keys | Anti-join validation   |
+| 3 | Invalid dates         | Coerce + quarantine    |
+| 4 | Duplicate conflicts   | Conflict logging       |
+| 5 | Negative quantities   | Exclude from warehouse |
+
+---
+
+# 📂 Project Structure
+
+```text
 retail-data-pipeline/
-├── data/               # Pre-baked mock CSVs (anomalous test data)
-
-├── database/           # SQLite warehouse (retail.db)
-
-├── logs/               # Pipeline execution logs
-
-├── quarantine/         # Isolated bad records
-
-├── reports/            # Generated CSV reports
-
+│
+├── data/
+├── database/
+├── logs/
+├── quarantine/
+├── reports/
 ├── src/
-
-│   ├── config.py       # Env-agnostic path resolution
-
-
-
-│   ├── extract.py      # Dual-mode ingestion engine
-
-
-│   ├── validate.py     # Quality gateway + scorecard
-
-│   ├── clean.py        # Cosmetic normalisation
-
-│   ├── transform.py    # Star schema builder
-
-│   ├── load.py         # SQLAlchemy warehouse writer
-
-│   ├── report.py       # Export engine
-
-│   └── app.py          # Streamlit 5-tab portal
-
-├── main.py             # CLI orchestrator
-
+│   ├── extract.py
+│   ├── validate.py
+│   ├── clean.py
+│   ├── transform.py
+│   ├── load.py
+│   ├── report.py
+│   └── app.py
+│
+├── main.py
 ├── Dockerfile
-
-└── requirements.txt
-
+├── requirements.txt
+└── README.md
 ```
 
-#
+---
+
+# 🚀 Quick Start
+
+## Clone Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/retail-data-pipeline.git
+cd retail-data-pipeline
+```
+
+---
+
+## Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Run Pipeline
+
+```bash
+python main.py
+```
+
+---
+
+## Run Dashboard
+
+```bash
+streamlit run src/app.py
+```
+
+---
+
+# 🐳 Docker
+
+```bash
+docker build -t retail-pipeline .
+docker run -p 8501:8501 retail-pipeline
+```
+
+Open:
+
+```text
+http://localhost:8501
+```
+
+---
+
+# 📈 Power BI Integration
+
+1. Download `retail.db`
+2. Connect via SQLite ODBC Driver
+3. Import:
+
+* fact_sales
+* dim_products
+* dim_stores
+
+Create DAX Measures:
+
+```DAX
+Total Revenue =
+SUM(fact_sales[amount])
+```
+
+```DAX
+AOV =
+DIVIDE(
+    [Total Revenue],
+    DISTINCTCOUNT(fact_sales[sale_id])
+)
+```
+
+---
+
+# 🏆 Business Insights Generated
+
+✅ Top Selling Products
+
+✅ Revenue by City
+
+✅ Revenue by Region
+
+✅ Daily Revenue Trends
+
+✅ Store Performance
+
+✅ Product Performance
+
+---
+
+# 🛠 Tech Stack
+
+* Python
+* Pandas
+* NumPy
+* SQLite
+* SQLAlchemy
+* Streamlit
+* Plotly
+* Docker
+* Power BI
+
+---
+
+# 🌐 Live Demo
+
+# **👉 https://mandelbulb-4omxqtuh369sbcxvj37rtn.streamlit.app/**
+
+---
+
+# 👨‍💻 Author
+
+**Laksh Vyas**
+
+Data Engineering | Machine Learning | Software Engineering
+
+Built as a production-style Data Engineering assignment demonstrating ETL, Data Warehousing, Analytics Engineering, and Business Intelligence.
